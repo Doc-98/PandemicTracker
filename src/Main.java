@@ -1,26 +1,20 @@
 import java.io.File;
 import java.io.IOException;
 
+import static Modules.Controller.*;
 import static Modules.DataFetcher.*;
 
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        File f = new File("C:\\Users\\dvinc\\IdeaProjects\\PandemicTracker\\src\\Resources\\cities.csv");
+        init();
 
-        if(f.exists()) {
-            loadInitFile(f);
-        }
+        start("bue kha stpt new was atl kin cai hcm");
 
-        f = new File("C:\\Users\\dvinc\\IdeaProjects\\PandemicTracker\\src\\Resources\\roads.csv");
+        printCities();
 
-        if(f.exists()) {
-            loadRoadsFile(f);
-        }
+        listener.listen();
 
-        for(String c : cityList.keySet()){
-            System.out.println(cityList.get(c));
-        }
-    }
+   }
 }
