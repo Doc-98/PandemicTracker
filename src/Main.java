@@ -10,7 +10,13 @@ public class Main {
 
         init();
 
+        printCities();
+
         start("bue kha stpt new was atl kin cai hcm");
+
+        System.out.println("--------------------------------------");
+
+//        epidemic("tai");
 
         printCities();
 

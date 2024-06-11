@@ -5,5 +5,5 @@ public enum Color {
     RED,
     BLUE,
     BLACK,
-    SPETTRALE
+    GHOST
 }

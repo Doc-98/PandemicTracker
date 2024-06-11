@@ -16,15 +16,9 @@ public class Controller {
     public static Listener listener = new Listener();
     static int contaminationLevel = 0;
 
-
-
     public static void init() throws IOException {
-
         cityListInitializer();
-
         deck.initializer();
-
-
     }
 
     public static void start(String keys) {
@@ -34,10 +28,19 @@ public class Controller {
             list.add(tokens.nextToken());
         }
         if(list.size() != 9) throw new IllegalArgumentException();
-        deck.discardMultiple(list);
-        for(int i = 1; i <= 9; i++) {
-            cityList.get(list.get(i - 1)).addCubes((9 - i) / 3 + 1);
-        }
+        deck.setup(list);
+    }
+
+    public static int getContaminationDraw() {
+        return switch (contaminationLevel) {
+            case 0, 1, 2 -> 2;
+            case 3, 4 -> 3;
+            case 5, 6 -> 4;
+            default -> {
+                System.out.println("Contamination level out of bounds");
+                yield 0;
+            }
+        };
     }
 
     // LISTENER CALLS
@@ -51,7 +54,7 @@ public class Controller {
     }
 
     public static void epidemic(String input) {
-        deck.discard(input);
+        deck.singleDiscard(input);
         cityList.get(input).addCubes(3);
         deck.reShuffle();
         contaminationLevel++;
@@ -60,9 +63,9 @@ public class Controller {
     public static void treat(String input) {
         StringTokenizer tokens = new StringTokenizer(input);
         City city = cityList.get(tokens.nextToken());
-        if (tokens.countTokens() == 2)
+        if (tokens.countTokens() == 1)
             city.removeCubes(Integer.parseInt(tokens.nextToken()));
-        else if (tokens.countTokens() == 3)
+        else if (tokens.countTokens() == 2)
             city.removeCubes(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
         else
             throw new IllegalArgumentException();
@@ -71,11 +74,11 @@ public class Controller {
     public static void add(String input) {
         StringTokenizer tokens = new StringTokenizer(input);
         City city = cityList.get(tokens.nextToken());
-        if(tokens.countTokens() == 1)
+        if(tokens.countTokens() == 0)
             city.addCubes();
-        else if(tokens.countTokens() == 2)
+        else if(tokens.countTokens() == 1)
             city.addCubes(Integer.parseInt(tokens.nextToken()));
-        else if(tokens.countTokens() == 3)
+        else if(tokens.countTokens() == 2)
             city.addCubes(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
         else throw new IllegalArgumentException();
     }
@@ -85,7 +88,6 @@ public class Controller {
     }
 
     // PRIVATE
-
     private static void cityListInitializer() throws IOException {
         File f = new File("C:\\Users\\dvinc\\IdeaProjects\\PandemicTracker\\src\\Resources\\cities.csv");
 

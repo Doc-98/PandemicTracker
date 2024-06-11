@@ -2,12 +2,15 @@ package Modules;
 
 import java.util.LinkedList;
 
+import static Modules.Calculator.*;
 import static Modules.Controller.cityList;
+import static Modules.Controller.getContaminationDraw;
 
 public class ContaminationDeck {
 
     private LinkedList<LinkedList<String>> deck;
     private LinkedList<String> discardPile;
+    private int bottomPileCheck = 48;
 
     // CONSTRUCTOR
     public ContaminationDeck() {
@@ -16,51 +19,47 @@ public class ContaminationDeck {
         this.discardPile = new LinkedList<>();
     }
 
+    // ACTIONS
     public void initializer() {
-        for(String str : cityList.keySet())
+        for(String str : cityList.keySet()) {
             deck.get(0).add(str);
+        }
+        updateProb();
     }
 
-    public boolean addCard(String card) {
-        return this.deck.getLast().add(card);
-    }
-
-    public boolean addCard(int index, String card) {
-        return deck.get(index).add(card);
-    }
-
-    public boolean removeCard(String card) {
-        return deck.getLast().remove(card);
-    }
-
-    public boolean removeCard(int index, String card) {
-        return deck.get(index).remove(card);
-    }
-
-    public boolean isEmpty(int index) {
-        return deck.get(index).isEmpty();
-    }
-
-    public int size(int index) {
-        return deck.get(index).size();
+    public void setup(LinkedList<String> list) {
+        discardMultiple(list);
+        for(int i = 1; i <= 9; i++) {
+            cityList.get(list.get(i - 1)).addCubes((9 - i) / 3 + 1);
+        }
+        updateProb();
     }
 
     public void reShuffle() {
         deck.addLast(discardPile);
         discardPile = new LinkedList<>();
+        updateProb();
     }
 
-    public void discard(String card) {
-        if(!removeCard(card)) {
-            System.out.println("card not found");
-            discardPile.add(card);
-        }
+    public void singleDiscard(String card) {
+        discard(card);
+        updateProb();
     }
 
     public void discardMultiple(LinkedList<String> cards) {
         for(String str : cards) {
             discard(str);
         }
+        updateProb();
+    }
+
+    //INFORMATION GETTERS
+    public int size(int index) {
+        return deck.get(index).size();
+    }
+
+    public boolean isEmpty(int index) {
+        return deck.get(index).isEmpty();
     }
 
     // GETTERS
@@ -72,11 +71,47 @@ public class ContaminationDeck {
         return deck.get(index);
     }
 
-    public int getTopPileSize() {
-        return this.deck.size();
+    public LinkedList<String> getTopPile() {
+        return this.deck.getLast();
     }
 
-    public int getSubPileSize(int index) {
-        return this.deck.get(index).size();
+    // PRIVATE
+    private boolean removeCard(String card) {
+        return deck.getLast().remove(card);
     }
+
+    private void discard(String card) {
+        if(!removeCard(card)) {
+            System.out.println("card not found");
+        }
+        discardPile.add(card);
+        cityList.get(card).setBottomDrawProbability(0f);
+    }
+
+    private void updateProb() {
+        for(String str : cityList.keySet()) {
+            cityList.get(str).setDrawProbability(cityProbability(str, deck.size(), getContaminationDraw()));
+        }
+        int botDeckSize = deck.get(0).size();
+        if(bottomPileCheck != botDeckSize) {
+            for(String str : deck.get(0)) {
+                cityList.get(str).setBottomDrawProbability(singleProb(botDeckSize));
+            }
+            bottomPileCheck = botDeckSize;
+        }
+    }
+
+    // DEBUG
+    private boolean addCard(String card) {
+        return this.deck.getLast().add(card);
+    }
+
+    private boolean addCard(int index, String card) {
+        return deck.get(index).add(card);
+    }
+
+    private boolean removeCard(int index, String card) {
+        return deck.get(index).remove(card);
+    }
+
 }
