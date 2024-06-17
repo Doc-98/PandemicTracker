@@ -13,10 +13,10 @@ public class DataFetcher {
 
         // get data
         StringTokenizer st = new StringTokenizer(info.nextToken(), "-");
+        
         String key = info.nextToken();
         int color = Integer.parseInt(info.nextToken());
         int panic = Integer.parseInt(info.nextToken());
-        boolean splash = Boolean.parseBoolean(info.nextToken());
 
         // remove "-" characters from names
         StringBuilder name = new StringBuilder();
@@ -26,7 +26,7 @@ public class DataFetcher {
         }
 
         // save data
-        cityList.put(key, new City(name.toString(), key, color, panic, splash));
+        cityList.put(key, new City(name.toString(), key, color, panic));
     }
 
     // Adds the links of one city to its attribute "linked cities" via the passed tokens
@@ -52,7 +52,7 @@ public class DataFetcher {
 
             cursoreToken = new StringTokenizer(cursoreLinea, ",");
 
-            if (cursoreToken.countTokens() == 5) {
+            if (cursoreToken.countTokens() == 4) {
                 addCity(cursoreToken);
             } else throw new IllegalArgumentException(); // verify integrity of data (we need the correct number of arguments)
         }

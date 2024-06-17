@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PandemicTracker:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PandemicTracker_jar</output-path>
+    <root id="archive" name="PandemicTracker.jar">
+      <element id="module-output" name="PandemicTracker" />
+    </root>
+  </artifact>
+</component>

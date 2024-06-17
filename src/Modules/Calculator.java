@@ -10,6 +10,7 @@ import static Modules.Controller.deck;
 public class Calculator {
 
     public static Set<String> riskCities = new HashSet<>();
+    public static Set<String> splashedCities = new HashSet<>();
 
     public static float cityProbability(String city, int deckSize, int numDraws) {
 
@@ -41,15 +42,45 @@ public class Calculator {
         return 1f/(float)(size);
     }
 
-    public static float outbreakProbability(){
+    public static float outbreakProb() {
 
         float prob = 0f;
 
         for(String str : riskCities) {
-            prob = prob + cityList.get(str).getDrawProbability() + cityList.get(str).getBottomDrawProbability();
+            prob = prob + cityList.get(str).getDrawProbability();
         }
 
         return prob;
+    }
+    
+    public static float bottomOutbreakProb() {
+        
+        float prob = 0f;
+        
+        for(String str : splashedCities) {
+            prob += cityList.get(str).getBottomDrawProbability();
+        }
+        
+        return prob;
+    }
+    
+    public static void printProb() {
+        
+        System.out.println("La probabilità di focolaio per CONTAMINAZIONE è pari al " + outbreakProb() * 100 + "%");
+        System.out.println("Le città a rischio sono le seguenti: ");
+        
+        for (String city : riskCities) {
+            System.out.println("\t" + cityList.get(city).getName());
+        }
+        
+        System.out.println("---------------------------------------------------------------------------------");
+        
+        System.out.println("La probabilità di focolaio per EPIDEMIA è pari al " + bottomOutbreakProb() * 100 + "%");
+        System.out.println("Le città a rischio sono le seguenti: ");
+        
+        for (String city : splashedCities) {
+            System.out.println("\t" + cityList.get(city).getName());
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
+import static Modules.Calculator.*;
 import static Modules.DataFetcher.loadInitFile;
 import static Modules.DataFetcher.loadRoadsFile;
 
@@ -13,7 +14,16 @@ public class Controller {
 
     public static LinkedHashMap<String, City> cityList = new LinkedHashMap<>();
     public static ContaminationDeck deck = new ContaminationDeck();
-    public static Listener listener = new Listener();
+    public static Listener listener;
+    
+    static {
+        try {
+            listener = new Listener();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     static int contaminationLevel = 0;
 
     public static void init() throws IOException {
@@ -45,6 +55,7 @@ public class Controller {
 
     // LISTENER CALLS
     // TODO: GESTIRE CASI DI INPUT INVALIDO (QUI O NEL LISTENER)
+    
     // Prende una stringa con le chiavi di ogni città pescata separate da uno spazio. Le pesca tutte.
     public static void draw(String input) {
         LinkedList<String> list = tokenSeparator(input);
@@ -63,7 +74,9 @@ public class Controller {
     public static void treat(String input) {
         StringTokenizer tokens = new StringTokenizer(input);
         City city = cityList.get(tokens.nextToken());
-        if (tokens.countTokens() == 1)
+        if(tokens.countTokens() == 0)
+            city.removeCubes(1);
+        else if (tokens.countTokens() == 1)
             city.removeCubes(Integer.parseInt(tokens.nextToken()));
         else if (tokens.countTokens() == 2)
             city.removeCubes(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
@@ -71,7 +84,7 @@ public class Controller {
             throw new IllegalArgumentException();
     }
 
-    public static void add(String input) {
+    public static void contaminate(String input) {
         StringTokenizer tokens = new StringTokenizer(input);
         City city = cityList.get(tokens.nextToken());
         if(tokens.countTokens() == 0)
@@ -81,6 +94,23 @@ public class Controller {
         else if(tokens.countTokens() == 2)
             city.addCubes(Integer.parseInt(tokens.nextToken()), Integer.parseInt(tokens.nextToken()));
         else throw new IllegalArgumentException();
+    }
+    
+    public static void outbreak(String input) {
+        
+        City city = cityList.get(input);
+        
+        for (String key : city.getLikedCities()) {
+            cityList.get(key).splashCity(city.getColor());
+        }
+    }
+    
+    public static void printProbabilities() {
+        printProb();
+    }
+    
+    public static void printDeck() {
+        System.out.println(deck);
     }
 
     public static void printCities() {
@@ -112,11 +142,11 @@ public class Controller {
     }
 
     // DEBUG
-    public static void printDecks() {
+    public static void printDeck_DEBUG() {
         deck.getDeck().forEach(System.out::println);
     }
 
-    public static void printCityKeys() {
+    public static void printCityKeys_DEBUG() {
         cityList.keySet().forEach(System.out::println);
     }
 }

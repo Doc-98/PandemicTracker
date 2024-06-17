@@ -89,10 +89,13 @@ public class ContaminationDeck {
     }
 
     private void updateProb() {
+        
         for(String str : cityList.keySet()) {
             cityList.get(str).setDrawProbability(cityProbability(str, deck.size(), getContaminationDraw()));
         }
+        
         int botDeckSize = deck.get(0).size();
+        
         if(bottomPileCheck != botDeckSize) {
             for(String str : deck.get(0)) {
                 cityList.get(str).setBottomDrawProbability(singleProb(botDeckSize));
@@ -114,4 +117,24 @@ public class ContaminationDeck {
         return deck.get(index).remove(card);
     }
 
+    // TO STRING
+    public String toString(){
+        
+        StringBuilder str = new StringBuilder();
+        
+        str.append("--- MAZZO ---");
+        for(int i = deck.size() - 1; i >= 0; i--) {
+            str.append("Mazzetto #" + i + ":\n");
+            for(String key : deck.get(i)) {
+                str.append("\t" + cityList.get(key).getName() + "\n");
+            }
+        }
+        
+        str.append("\n\n--- SCARTI ---\n");
+        for(String key : discardPile) {
+            str.append("\t" + cityList.get(key).getName() + "\n");
+        }
+        
+        return String.valueOf(str);
+    }
 }

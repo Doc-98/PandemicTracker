@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static Modules.Calculator.riskCities;
+import static Modules.Calculator.splashedCities;
 
 public class City {
 
@@ -14,12 +15,12 @@ public class City {
     private final Set<String> likedCities =  new HashSet<String>();
     private final HashMap<Color, Integer> cubes;
     private int panicLevel;
-    private boolean splashed;
     private float drawProbability;
     private float bottomDrawProbability;
+    private boolean eradicated = false;
 
     // CONSTRUCTOR
-    public City (String name, String key,  int color, int panicLevel, boolean splashed) {
+    public City (String name, String key,  int color, int panicLevel) {
 
         this.name = name;
 
@@ -31,8 +32,6 @@ public class City {
 
         this.panicLevel = panicLevel;
 
-        this.splashed = splashed;
-
         this.drawProbability = 0f;
 
         this.bottomDrawProbability = 0f;
@@ -41,29 +40,33 @@ public class City {
     // PUBLIC METHODS
     // Adds one cube of the corresponding color to the city. Gives alert in case of outbreak.
     public void addCubes() {
-        if(this.cubes.get(this.color) == 3) {
-            outbreakAlert();
-        } else addCubesEx(this.color, 1);
+        addCubesEx(this.color, 1);
     }
     // Adds the specified number of cubes of the corresponding color to the city. Gives alert in case of outbreak and sets cubes to 3.
     public void addCubes(int cubes) {
-        if(this.cubes.get(this.color) + cubes > 3) {
-            outbreakAlert();
-        } else addCubesEx(this.color, cubes);
+        addCubesEx(this.color, cubes);
     }
     // Adds the specified number of cubes of the specified color to the city. Gives alert in case of outbreak and sets cubes to 3.
     public void addCubes(int cubes, int color) {
-        if(this.cubes.get(this.color) + cubes > 3) {
-            outbreakAlert();
-        } else addCubesEx(findColor(color), cubes);
+        addCubesEx(findColor(color), cubes);
     }
 
     public void removeCubes(int cubes) {
         removeCubesEx(this.color, cubes);
     }
-
     public void removeCubes(int cubes, int color) {
         removeCubesEx(findColor(color), cubes);
+    }
+    
+    public void splashCity(Color color) {
+        addCubes(1, findColor(color));
+        if(color == this.color) {
+            splashedCities.add(key);
+        }
+    }
+    
+    public void eradicate() {
+        this.eradicated = true;
     }
 
     // GETTERS
@@ -87,10 +90,6 @@ public class City {
         return this.panicLevel;
     }
 
-    public boolean isSplashed() {
-        return this.splashed;
-    }
-
     public int getCubes(){
         return this.cubes.get(this.color);
     }
@@ -102,14 +101,14 @@ public class City {
     public float getBottomDrawProbability() {
         return this.bottomDrawProbability;
     }
+    
+    public boolean isEradicated() {
+        return this.eradicated;
+    }
 
     // SETTERS
     public void setPanicLevel(int panicLevel) {
         this.panicLevel = panicLevel;
-    }
-
-    public void setSplashed(boolean splashed) {
-        this.splashed = splashed;
     }
 
     public void setDrawProbability(float drawProbability) {
@@ -119,6 +118,10 @@ public class City {
     public void setBottomDrawProbability(float bottomDrawProbability) {
         this.bottomDrawProbability = bottomDrawProbability;
     }
+    
+    public void setEradicated(boolean eradicated) {
+        this.eradicated = eradicated;
+    }
 
     // PRIVATE METHODS
     private Color findColor(int color) {
@@ -127,7 +130,17 @@ public class City {
             case 2 -> Color.RED;
             case 3 -> Color.BLUE;
             case 4 -> Color.BLACK;
+            case 5 -> Color.GHOST;
             default -> throw new IllegalArgumentException();
+        };
+    }
+    private int findColor(Color color) {
+        return switch (color) {
+            case YELLOW -> 1;
+            case RED -> 2;
+            case BLUE -> 3;
+            case BLACK -> 4;
+            case GHOST -> 5;
         };
     }
 
@@ -145,10 +158,18 @@ public class City {
     }
 
     private void addCubesEx(Color color, int cubes) {
+        
+        if (isEradicated()) return;
+        
         int newCubes = this.cubes.get(color) + cubes;
-        this.cubes.replace(color, newCubes);
-        if(newCubes == 3) riskCities.add(this.key);
+        
+        if (newCubes >= 3) {
+            maxOutCubes(color);
+            if (newCubes > 3) outbreakAlert();
+        } else
+            this.cubes.replace(color, newCubes);
     }
+    
     private void maxOutCubes(Color color) {
         this.cubes.replace(color, 3);
         riskCities.add(this.key);
@@ -165,7 +186,6 @@ public class City {
     private void outbreakAlert() {
         System.out.println("OUTBREAK!\n\t" + this.name);
         System.out.println("\tCities Affected: " + this.likedCities);
-        maxOutCubes(this.color);
         this.panicLevel++;
     }
 
@@ -176,7 +196,6 @@ public class City {
         str.append("Color: " + this.color + "\n\t");
         str.append("Links: " + this.likedCities + "\n\t");
         str.append("Panic Level: " + this.panicLevel + "\n\t");
-        str.append("Splashed: " + this.splashed + "\n\t");
         str.append("Draw Probability: " + this.drawProbability + "\n\t");
         str.append("Draw from Bottom Probability: " + this.bottomDrawProbability + "\n\t");
         str.append("Cubes: \n\t" + this.cubes + "\n" );
