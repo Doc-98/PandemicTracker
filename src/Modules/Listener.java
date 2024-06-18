@@ -58,6 +58,7 @@ public class Listener {
                         printError("1");
                         continue;
                     }
+                    printProbabilities();
                     break;
                 case "treat":
                     System.out.println("Inserire il codice della città arginata e il numero di cubi rimossi:");
