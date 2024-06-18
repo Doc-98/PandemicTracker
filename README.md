@@ -43,7 +43,7 @@ I codici città coincidono tutti con le prime 3 lettere del nome della città.
     </tr>
 </table>
 
-> [!NOTA]
+> [!NOTE]
 > I comandi contrasseggnati da un asterisco ("*") stampano lo stato delle probabilità dopo essere stati risolti.
 
 ## Comandi -> input
