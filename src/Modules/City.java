@@ -65,8 +65,10 @@ public class City {
         }
     }
     
-    public void eradicate() {
-        this.eradicated = true;
+    public void checkEradicate(int color) {
+        if(this.color == findColor(color)) {
+            eradicate();
+        }
     }
 
     // GETTERS
@@ -159,7 +161,7 @@ public class City {
 
     private void addCubesEx(Color color, int cubes) {
         
-        if (isEradicated()) return;
+        if (isEradicated() || cubes < 1) return;
         
         int newCubes = this.cubes.get(color) + cubes;
         
@@ -169,24 +171,38 @@ public class City {
         } else
             this.cubes.replace(color, newCubes);
     }
-    
     private void maxOutCubes(Color color) {
         this.cubes.replace(color, 3);
         riskCities.add(this.key);
     }
 
     private void removeCubesEx(Color color, int cubes) {
-        this.cubes.replace(color, this.cubes.get(color) - cubes);
-        for(int i : this.cubes.values()) {
-            if(i == 3) return;
+        
+        int newCubes = this.cubes.get(color) - cubes;
+        
+        if(newCubes < 1) {
+            clearCubes(color);
+        } else
+            this.cubes.replace(color, newCubes);
+        
+        for(int cubeCursor : this.cubes.values()) {
+            if(cubeCursor == 3) return;
         }
         riskCities.remove(this.key);
     }
+    private void clearCubes(Color color) {
+        this.cubes.replace(color, 0);
+    }
 
     private void outbreakAlert() {
-        System.out.println("OUTBREAK!\n\t" + this.name);
-        System.out.println("\tCities Affected: " + this.likedCities);
+        System.out.println("\n~~~~~~~~~~~~~~~~~~ FOCOLAIO DEL P.D. ~~~~~~~~~~~~~~~~~~");
+        System.out.println("\t" + this.name.toUpperCase() + " -> Cities Affected: " + this.likedCities);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         this.panicLevel++;
+    }
+    
+    private void eradicate() {
+        this.eradicated = true;
     }
 
     // DEBUG
@@ -198,7 +214,7 @@ public class City {
         str.append("Panic Level: " + this.panicLevel + "\n\t");
         str.append("Draw Probability: " + this.drawProbability + "\n\t");
         str.append("Draw from Bottom Probability: " + this.bottomDrawProbability + "\n\t");
-        str.append("Cubes: \n\t" + this.cubes + "\n" );
+        str.append("Cubes:\n\t" + this.cubes + "\n" );
 
         return str.toString();
     }

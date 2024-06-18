@@ -1,0 +1,11 @@
+block
+hcm man ban
+view-b
+edit cubes
++hcm 2
+view-b
+draw
+hcm
+pd
+hcm
+view-b

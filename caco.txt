@@ -1,0 +1,6 @@
+load
+deck
+draw
+mos lon osa
+deck
+exit

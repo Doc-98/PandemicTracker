@@ -47,7 +47,8 @@ public class Calculator {
         float prob = 0f;
 
         for(String str : riskCities) {
-            prob = prob + cityList.get(str).getDrawProbability();
+            if(deck.getTopPile().contains(str))
+                prob = prob + cityList.get(str).getDrawProbability();
         }
 
         return prob;
@@ -66,21 +67,30 @@ public class Calculator {
     
     public static void printProb() {
         
+        System.out.println("\n########################################################################################\n");
         System.out.println("La probabilità di focolaio per CONTAMINAZIONE è pari al " + outbreakProb() * 100 + "%");
-        System.out.println("Le città a rischio sono le seguenti: ");
+        System.out.println("Le città a rischio NEL MAZZO sono le seguenti:\n");
         
         for (String city : riskCities) {
-            System.out.println("\t" + cityList.get(city).getName());
+            if(deck.getTopPile().contains(city))
+                System.out.println("\t" + cityList.get(city).getName());
         }
         
-        System.out.println("---------------------------------------------------------------------------------");
+        System.out.println("\nLe città a rischio NEL MAZZO DEGLI SCARTI sono le seguenti:\n");
+        for (String city : riskCities) {
+            if(deck.getDiscardPile().contains(city))
+                System.out.println("\t" + cityList.get(city).getName());
+        }
+        
+        System.out.println("\n---------------------------------------------------------------------------------\n");
         
         System.out.println("La probabilità di focolaio per EPIDEMIA è pari al " + bottomOutbreakProb() * 100 + "%");
-        System.out.println("Le città a rischio sono le seguenti: ");
+        System.out.println("Le città a rischio che possono essere PESCATE DAL FONDO sono le seguenti:\n");
         
         for (String city : splashedCities) {
             System.out.println("\t" + cityList.get(city).getName());
         }
+        System.out.println("\n########################################################################################");
     }
 
 }

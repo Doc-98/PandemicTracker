@@ -74,6 +74,10 @@ public class ContaminationDeck {
     public LinkedList<String> getTopPile() {
         return this.deck.getLast();
     }
+    
+    public LinkedList<String> getDiscardPile() {
+        return this.discardPile;
+    }
 
     // PRIVATE
     private boolean removeCard(String card) {
@@ -123,7 +127,7 @@ public class ContaminationDeck {
         StringBuilder str = new StringBuilder();
         
         str.append("--- MAZZO ---");
-        for(int i = deck.size() - 1; i >= 0; i--) {
+        for(int i = 0; i < deck.size(); i++) {
             str.append("Mazzetto #" + i + ":\n");
             for(String key : deck.get(i)) {
                 str.append("\t" + cityList.get(key).getName() + "\n");
