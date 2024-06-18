@@ -1,6 +1,11 @@
 # PandemicTracker
 Sviluppata dal dr. Gianfranco Ricci.
 
+> [!CAUTION]
+> SPOILER WARNING: Seguono alcuni spoiler della campagna di Pandemic Legacy Season 1.
+> 
+> SPOILER WARNING: There will be some spoilers about the campaign of Pandemic Legacy Season 1.
+
 ## Cheat Sheet
 
 <table>
@@ -38,7 +43,7 @@ I codici città coincidono tutti con le prime 3 lettere del nome della città.
     </tr>
 </table>
 
-> [!NOTE]
+> [!NOTA]
 > I comandi contrasseggnati da un asterisco ("*") stampano lo stato delle probabilità dopo essere stati risolti.
 
 ## Comandi -> input
