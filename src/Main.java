@@ -11,6 +11,10 @@ public class Main {
 
 //        start("bue kha stpt new was atl kin cai hcm");
 
+//        listener.load("pipo");
+//        easyPrintAll();
+//        easyPrintRisk();
+        
         listener.listen();
 
    }

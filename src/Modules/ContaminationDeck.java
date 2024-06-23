@@ -87,9 +87,11 @@ public class ContaminationDeck {
     private void discard(String card) {
         if(!removeCard(card)) {
             System.out.println("card not found");
+            return;
         }
         discardPile.add(card);
         cityList.get(card).setBottomDrawProbability(0f);
+        splashedCities.remove(card);
     }
 
     private void updateProb() {

@@ -35,6 +35,7 @@ public class Listener {
         out = new PrintWriter(new FileWriter(record), true);
     }
     
+    //TODO: SPEZZARE IL METODO IN PIÙ METODI, FARE ASTRAZIONE CON IL CONTROLLER.
     public void listen() throws IOException {
         
         while(!input.equals("exit")) {
@@ -101,7 +102,13 @@ public class Listener {
                 case "deck":
                     printDeck();
                     break;
-                case "view-b":
+                case "view":
+                    easyPrintAll();
+                    break;
+                case "viewr":
+                    easyPrintRisk();
+                    break;
+                case "view-db":
                     printCities();
                     break;
                 case "start":

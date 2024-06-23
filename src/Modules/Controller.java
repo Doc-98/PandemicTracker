@@ -2,10 +2,7 @@ package Modules;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import static Modules.Calculator.*;
 import static Modules.DataFetcher.loadInitFile;
@@ -314,6 +311,19 @@ public class Controller {
         cityList.values().forEach(System.out::println);
     }
     
+    public static void easyPrintRisk() {
+        ArrayList<City> cities = new ArrayList<>();
+        riskCities.forEach(risk -> cities.add(cityList.get(risk)));
+        splashedCities.forEach(splash -> cities.add(cityList.get(splash)));
+        System.out.println("~".repeat(51) + " CITTÀ A RISCHIO " + "~".repeat(52));
+        easyPrint(cities);
+    }
+    
+    public static void easyPrintAll() {
+        System.out.println("~".repeat(53) + " STATO CITTÀ " + "~".repeat(54));
+        easyPrint(cityList.values());
+    }
+    
     public static boolean editCubes(String input) {
         if (input.startsWith("-")) return treat(input.substring(1));
         if (input.startsWith("+")) return contaminate(input.substring(1));
@@ -321,6 +331,14 @@ public class Controller {
     }
 
     // PRIVATE
+    private static void easyPrint(Collection<City> cities) {
+        System.out.println("-".repeat(120));
+        for (City c : cities) {
+            System.out.println(c.summary());
+            System.out.println("-".repeat(120));
+        }
+    }
+    
     private static void cityListInitializer() throws IOException {
         File f = new File("C:\\Users\\dvinc\\IdeaProjects\\PandemicTracker\\src\\Resources\\cities.csv");
 

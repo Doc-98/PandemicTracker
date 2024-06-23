@@ -218,4 +218,17 @@ public class City {
 
         return str.toString();
     }
+    
+    public String summary(){
+        
+        int colWidth = 30;
+        StringBuilder str = new StringBuilder();
+        
+        str.append(String.format("%-" + colWidth + "s", this.name + ":") +
+                String.format("%-" + colWidth + "s", this.cubes.get(this.color)) +
+                String.format("%-" + colWidth + "s", "TP: " + String.format("%.2f", this.drawProbability * 100) + "%") +
+                String.format("%-" + colWidth + "s", "BP: " + String.format("%.2f", this.bottomDrawProbability * 100) + "%"));
+        
+        return str.toString();
+    }
 }
