@@ -76,7 +76,7 @@ public class Controller {
         
         if(!cityList.containsKey(input)) return false;
         
-        deck.singleDiscard(input);
+        deck.epidDiscard(input);
         cityList.get(input).addCubes(3);
         deck.reShuffle();
         contaminationLevel++;

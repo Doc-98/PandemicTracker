@@ -41,8 +41,8 @@ public class ContaminationDeck {
         updateProb();
     }
 
-    public void singleDiscard(String card) {
-        discard(card);
+    public void epidDiscard(String card) {
+        botDiscard(card);
         updateProb();
     }
 
@@ -81,11 +81,27 @@ public class ContaminationDeck {
 
     // PRIVATE
     private boolean removeCard(String card) {
+        if(deck.getLast().isEmpty()){
+            deck.removeLast();
+        }
         return deck.getLast().remove(card);
+    }
+    private boolean botRemove(String card) {
+        return deck.getFirst().remove(card);
     }
 
     private void discard(String card) {
         if(!removeCard(card)) {
+            System.out.println("card not found");
+            return;
+        }
+        discardPile.add(card);
+        cityList.get(card).setBottomDrawProbability(0f);
+        splashedCities.remove(card);
+    }
+
+    private void botDiscard(String card) {
+        if(!botRemove(card)) {
             System.out.println("card not found");
             return;
         }
