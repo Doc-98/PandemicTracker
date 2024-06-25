@@ -18,6 +18,8 @@ public class City {
     private float drawProbability;
     private float bottomDrawProbability;
     private boolean eradicated = false;
+    private boolean quarantined = false;
+    private boolean enclosed = false;
 
     // CONSTRUCTOR
     public City (String name, String key,  int color, int panicLevel) {
@@ -107,6 +109,14 @@ public class City {
     public boolean isEradicated() {
         return this.eradicated;
     }
+    
+    public boolean isQuarantined() {
+        return this.quarantined;
+    }
+    
+    public boolean isEnclosed() {
+        return this.enclosed;
+    }
 
     // SETTERS
     public void setPanicLevel(int panicLevel) {
@@ -123,6 +133,14 @@ public class City {
     
     public void setEradicated(boolean eradicated) {
         this.eradicated = eradicated;
+    }
+    
+    public void setQuarantined(boolean quarantined) {
+        this.quarantined = quarantined;
+    }
+    
+    public void setEnclosed(boolean enclosed) {
+        this.enclosed = enclosed;
     }
 
     // PRIVATE METHODS
@@ -162,6 +180,10 @@ public class City {
     private void addCubesEx(Color color, int cubes) {
         
         if (isEradicated() || cubes < 1) return;
+        if (isQuarantined()) {
+            this.quarantined = false;
+            return;
+        }
         
         int newCubes = this.cubes.get(color) + cubes;
         
@@ -173,7 +195,7 @@ public class City {
     }
     private void maxOutCubes(Color color) {
         this.cubes.replace(color, 3);
-        riskCities.add(this.key);
+        if(!this.enclosed) riskCities.add(this.key);
     }
 
     private void removeCubesEx(Color color, int cubes) {
@@ -195,10 +217,11 @@ public class City {
     }
 
     private void outbreakAlert() {
+        this.panicLevel++;
+        if(this.enclosed) return;
         System.out.println("\n~~~~~~~~~~~~~~~~~~ FOCOLAIO DEL P.D. ~~~~~~~~~~~~~~~~~~");
         System.out.println("\t" + this.name.toUpperCase() + " -> Cities Affected: " + this.likedCities);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        this.panicLevel++;
     }
     
     private void eradicate() {
@@ -221,13 +244,13 @@ public class City {
     
     public String summary(){
         
-        int colWidth = 30;
+        int namesColWidth = 30, cubesColWidth = 8, probColWidth = 21;
         StringBuilder str = new StringBuilder();
         
-        str.append(String.format("%-" + colWidth + "s", this.name + ":") +
-                String.format("%-" + colWidth + "s", this.cubes.get(this.color)) +
-                String.format("%-" + colWidth + "s", "TP: " + String.format("%.2f", this.drawProbability * 100) + "%") +
-                String.format("%-" + colWidth + "s", "BP: " + String.format("%.2f", this.bottomDrawProbability * 100) + "%"));
+        str.append(String.format("%-" + namesColWidth + "s", this.name + ":") +
+                String.format("%-" + cubesColWidth + "s", this.cubes.get(this.color)) +
+                String.format("%-" + probColWidth + "s", "TP: " + String.format("%.2f", this.drawProbability * 100) + "%") +
+                String.format("%-" + probColWidth + "s", "BP: " + String.format("%.2f", this.bottomDrawProbability * 100) + "%"));
         
         return str.toString();
     }

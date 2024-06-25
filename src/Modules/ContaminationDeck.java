@@ -42,13 +42,13 @@ public class ContaminationDeck {
     }
 
     public void epidDiscard(String card) {
-        botDiscard(card);
+        discard(card, 0);
         updateProb();
     }
 
     public void discardMultiple(LinkedList<String> cards) {
         for(String str : cards) {
-            discard(str);
+            discard(str, -1);
         }
         updateProb();
     }
@@ -80,28 +80,18 @@ public class ContaminationDeck {
     }
 
     // PRIVATE
-    private boolean removeCard(String card) {
-        if(deck.getLast().isEmpty()){
-            deck.removeLast();
+    private boolean removeCard(String card, int pile) {
+        if(pile == -1) {
+            if (deck.getLast().isEmpty()) {
+                deck.removeLast();
+            }
+            return deck.getLast().remove(card);
         }
-        return deck.getLast().remove(card);
-    }
-    private boolean botRemove(String card) {
-        return deck.getFirst().remove(card);
+        else return deck.get(pile).remove(card);
     }
 
-    private void discard(String card) {
-        if(!removeCard(card)) {
-            System.out.println("card not found");
-            return;
-        }
-        discardPile.add(card);
-        cityList.get(card).setBottomDrawProbability(0f);
-        splashedCities.remove(card);
-    }
-
-    private void botDiscard(String card) {
-        if(!botRemove(card)) {
+    private void discard(String card, int pile) {
+        if(!removeCard(card, pile)) {
             System.out.println("card not found");
             return;
         }
@@ -131,12 +121,8 @@ public class ContaminationDeck {
         return this.deck.getLast().add(card);
     }
 
-    private boolean addCard(int index, String card) {
+    private boolean addCard(String card, int index) {
         return deck.get(index).add(card);
-    }
-
-    private boolean removeCard(int index, String card) {
-        return deck.get(index).remove(card);
     }
 
     // TO STRING

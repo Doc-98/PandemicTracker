@@ -6,14 +6,12 @@ block
 ban hcm
 draw
 hcm san
-arg
 treat
 kha 2
 draw pd
 che
 treat
 del
-prob
 draw
 mon teh
 draw
@@ -22,7 +20,6 @@ epid
 riy
 treat
 mil 3
-prob
 treat
 lon
 draw
@@ -31,8 +28,6 @@ draw pd
 mum
 draw
 del teh
-viewr
-deck
 draw
 atl mil
 treat
@@ -51,13 +46,10 @@ draw
 teh atl
 treat
 atl
-viewr
-view
 draw
 del mil
 draw pd
 bag
-deck
 draw pd
 kol
 draw
@@ -74,11 +66,45 @@ edit cubes
 +teh
 treat
 los 2
-deck
 draw
 los bei
-deck
 treat
 del
 treat
 teh
+treat
+riy
+epid
+par
+treat
+gia 3
+draw
+bei mia los
+draw
+par hcm gia
+pd
+par
+pd
+hcm
+treat
+gia
+block
+ess lon par mil stpt
+epid
+new
+draw
+los new hcm
+block
+new lon mad
+pd
+new
+pd
+hcm
+treat
+ess 3
+draw
+gia mia par
+block
+mil par
+pd
+par

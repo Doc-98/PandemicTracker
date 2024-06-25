@@ -8,14 +8,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         init();
-
-//        start("bue kha stpt new was atl kin cai hcm");
-
-//        listener.load("pipo");
-//        easyPrintAll();
-//        easyPrintRisk();
         
-        listener.listen();
+        if(args.length != 0) {
+            listener.load("test");
+            easyPrintRisk();
+        }
+        else listener.listen();
 
    }
 }

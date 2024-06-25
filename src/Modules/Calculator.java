@@ -47,7 +47,7 @@ public class Calculator {
         float prob = 0f;
 
         for(String str : riskCities) {
-            if(deck.getTopPile().contains(str))
+            if(deck.getTopPile().contains(str) && !cityList.get(str).isQuarantined())
                 prob = prob + cityList.get(str).getDrawProbability();
         }
 
@@ -59,7 +59,7 @@ public class Calculator {
         float prob = 0f;
         
         for(String str : splashedCities) {
-            prob += cityList.get(str).getBottomDrawProbability();
+            if (!cityList.get(str).isQuarantined()) prob += cityList.get(str).getBottomDrawProbability();
         }
         
         return prob;
